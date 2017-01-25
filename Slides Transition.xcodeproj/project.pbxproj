@@ -1,0 +1,392 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC4BF3AB1E27C0F000664B2D /* ZipZap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4BF3AA1E27C0F000664B2D /* ZipZap.framework */; };
+		CC4BF3AD1E27C12B00664B2D /* ZipZap.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CC4BF3AA1E27C0F000664B2D /* ZipZap.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CC79ADD01E047FFA00949126 /* ImageFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC79ADCE1E047FFA00949126 /* ImageFile.swift */; };
+		CC79ADD21E04830100949126 /* SourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC79ADD11E04830100949126 /* SourceViewController.swift */; };
+		CC79ADD51E0483F100949126 /* CollectionViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC79ADD31E0483F100949126 /* CollectionViewItem.swift */; };
+		CC79ADD61E0483F100949126 /* CollectionViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC79ADD41E0483F100949126 /* CollectionViewItem.xib */; };
+		CC912D931E2124CF00FB8391 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CC912D911E2124CF00FB8391 /* Credits.rtf */; };
+		CC99A0AD1E04549E00C0E5DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC99A0AC1E04549E00C0E5DA /* AppDelegate.swift */; };
+		CC99A0B11E04549E00C0E5DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC99A0B01E04549E00C0E5DA /* Assets.xcassets */; };
+		CC99A0B41E04549E00C0E5DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC99A0B21E04549E00C0E5DA /* Main.storyboard */; };
+		CC99A0BE1E0458EA00C0E5DA /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC99A0BC1E0458EA00C0E5DA /* ContainerViewController.swift */; };
+		CC99A0C21E045DE300C0E5DA /* CrossfadeStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC99A0C11E045DE300C0E5DA /* CrossfadeStoryboardSegue.swift */; };
+		CCD8AC8D1E200775001A6E2D /* DoubleActionImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD8AC8C1E200775001A6E2D /* DoubleActionImageView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CC4BF3AC1E27C11700664B2D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CC4BF3AD1E27C12B00664B2D /* ZipZap.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		CC4BF3AA1E27C0F000664B2D /* ZipZap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ZipZap.framework; sourceTree = SOURCE_ROOT; };
+		CC79ADCE1E047FFA00949126 /* ImageFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFile.swift; sourceTree = "<group>"; };
+		CC79ADD11E04830100949126 /* SourceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceViewController.swift; sourceTree = "<group>"; };
+		CC79ADD31E0483F100949126 /* CollectionViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewItem.swift; sourceTree = "<group>"; };
+		CC79ADD41E0483F100949126 /* CollectionViewItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionViewItem.xib; sourceTree = "<group>"; };
+		CC912D921E2124CF00FB8391 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = Base; path = Base.lproj/Credits.rtf; sourceTree = "<group>"; };
+		CC99A0A91E04549E00C0E5DA /* Slides Transition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Slides Transition.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC99A0AC1E04549E00C0E5DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CC99A0B01E04549E00C0E5DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC99A0B31E04549E00C0E5DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CC99A0B51E04549E00C0E5DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC99A0BC1E0458EA00C0E5DA /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		CC99A0C11E045DE300C0E5DA /* CrossfadeStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossfadeStoryboardSegue.swift; sourceTree = "<group>"; };
+		CCD8AC8C1E200775001A6E2D /* DoubleActionImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleActionImageView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CC99A0A61E04549E00C0E5DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC4BF3AB1E27C0F000664B2D /* ZipZap.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CC4BF3A91E27C0CF00664B2D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC4BF3AA1E27C0F000664B2D /* ZipZap.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC79ADCC1E047FD400949126 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CC79ADD31E0483F100949126 /* CollectionViewItem.swift */,
+				CCD8AC8C1E200775001A6E2D /* DoubleActionImageView.swift */,
+				CC79ADCE1E047FFA00949126 /* ImageFile.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CC99A0A01E04549E00C0E5DA = {
+			isa = PBXGroup;
+			children = (
+				CC99A0AB1E04549E00C0E5DA /* Slides Transition */,
+				CC99A0AA1E04549E00C0E5DA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CC99A0AA1E04549E00C0E5DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CC99A0A91E04549E00C0E5DA /* Slides Transition.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC99A0AB1E04549E00C0E5DA /* Slides Transition */ = {
+			isa = PBXGroup;
+			children = (
+				CC99A0BB1E04585000C0E5DA /* Controller */,
+				CC4BF3A91E27C0CF00664B2D /* Frameworks */,
+				CC79ADCC1E047FD400949126 /* Model */,
+				CC99A0AC1E04549E00C0E5DA /* AppDelegate.swift */,
+				CC99A0B01E04549E00C0E5DA /* Assets.xcassets */,
+				CC99A0B51E04549E00C0E5DA /* Info.plist */,
+				CC99A0C01E0458F500C0E5DA /* Resources */,
+			);
+			path = "Slides Transition";
+			sourceTree = "<group>";
+		};
+		CC99A0BB1E04585000C0E5DA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CC99A0BC1E0458EA00C0E5DA /* ContainerViewController.swift */,
+				CC79ADD11E04830100949126 /* SourceViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		CC99A0C01E0458F500C0E5DA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CC912D911E2124CF00FB8391 /* Credits.rtf */,
+				CC79ADD41E0483F100949126 /* CollectionViewItem.xib */,
+				CC99A0B21E04549E00C0E5DA /* Main.storyboard */,
+				CC99A0C11E045DE300C0E5DA /* CrossfadeStoryboardSegue.swift */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CC99A0A81E04549E00C0E5DA /* Slides Transition */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC99A0B81E04549E00C0E5DA /* Build configuration list for PBXNativeTarget "Slides Transition" */;
+			buildPhases = (
+				CC99A0A51E04549E00C0E5DA /* Sources */,
+				CC99A0A61E04549E00C0E5DA /* Frameworks */,
+				CC99A0A71E04549E00C0E5DA /* Resources */,
+				CC4BF3AC1E27C11700664B2D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Slides Transition";
+			productName = "Slides Transition";
+			productReference = CC99A0A91E04549E00C0E5DA /* Slides Transition.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CC99A0A11E04549E00C0E5DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "Erich Küster";
+				TargetAttributes = {
+					CC99A0A81E04549E00C0E5DA = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 9DA3RM8WEL;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CC99A0A41E04549E00C0E5DA /* Build configuration list for PBXProject "Slides Transition" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CC99A0A01E04549E00C0E5DA;
+			productRefGroup = CC99A0AA1E04549E00C0E5DA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC99A0A81E04549E00C0E5DA /* Slides Transition */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC99A0A71E04549E00C0E5DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC99A0B11E04549E00C0E5DA /* Assets.xcassets in Resources */,
+				CC99A0B41E04549E00C0E5DA /* Main.storyboard in Resources */,
+				CC79ADD61E0483F100949126 /* CollectionViewItem.xib in Resources */,
+				CC912D931E2124CF00FB8391 /* Credits.rtf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CC99A0A51E04549E00C0E5DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC79ADD51E0483F100949126 /* CollectionViewItem.swift in Sources */,
+				CC99A0C21E045DE300C0E5DA /* CrossfadeStoryboardSegue.swift in Sources */,
+				CC99A0BE1E0458EA00C0E5DA /* ContainerViewController.swift in Sources */,
+				CC99A0AD1E04549E00C0E5DA /* AppDelegate.swift in Sources */,
+				CCD8AC8D1E200775001A6E2D /* DoubleActionImageView.swift in Sources */,
+				CC79ADD01E047FFA00949126 /* ImageFile.swift in Sources */,
+				CC79ADD21E04830100949126 /* SourceViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CC912D911E2124CF00FB8391 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC912D921E2124CF00FB8391 /* Base */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		CC99A0B21E04549E00C0E5DA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC99A0B31E04549E00C0E5DA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CC99A0B61E04549E00C0E5DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CC99A0B71E04549E00C0E5DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+			};
+			name = Release;
+		};
+		CC99A0B91E04549E00C0E5DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9DA3RM8WEL;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = "Slides Transition/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kuester.Slides-Transition";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		CC99A0BA1E04549E00C0E5DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9DA3RM8WEL;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = "Slides Transition/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kuester.Slides-Transition";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CC99A0A41E04549E00C0E5DA /* Build configuration list for PBXProject "Slides Transition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC99A0B61E04549E00C0E5DA /* Debug */,
+				CC99A0B71E04549E00C0E5DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC99A0B81E04549E00C0E5DA /* Build configuration list for PBXNativeTarget "Slides Transition" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC99A0B91E04549E00C0E5DA /* Debug */,
+				CC99A0BA1E04549E00C0E5DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CC99A0A11E04549E00C0E5DA /* Project object */;
+}
