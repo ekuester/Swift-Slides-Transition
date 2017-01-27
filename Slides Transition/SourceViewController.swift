@@ -36,7 +36,6 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
     var draggedItemsIndexPathSet: Set<IndexPath>!
     var entryIndex: Int = -1
     var fileIndex: Int = -1
-//    var imageArchive: ZZArchive? = nil
     var imageDoubleClickedObserver: NSObjectProtocol!
     var imageFolderURL: URL!
     var imageFiles: [ImageFile] = []

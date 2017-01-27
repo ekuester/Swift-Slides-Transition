@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -690,6 +691,22 @@
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <box boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="BeT-0L-QVQ">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                                <view key="contentView" id="0gH-Fu-hHF">
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <color key="fillColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            </box>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="BeT-0L-QVQ" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="5kQ-sU-kQY"/>
+                            <constraint firstAttribute="bottom" secondItem="BeT-0L-QVQ" secondAttribute="bottom" id="Jwo-JE-kbY"/>
+                            <constraint firstAttribute="trailing" secondItem="BeT-0L-QVQ" secondAttribute="trailing" id="OB2-Vf-0Pz"/>
+                            <constraint firstItem="BeT-0L-QVQ" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="wmw-hq-8Up"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

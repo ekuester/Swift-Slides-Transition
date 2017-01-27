@@ -1,7 +1,7 @@
 //
 //  ContainerViewController.swift
 //  Slides Transition
-//  swift 3.0
+//  Swift 3.0
 //
 //  Inspired by John Marstall
 //  <http://theiconmaster.com/2015/03/transitioning-between-view-controllers-in-the-same-window-with-swift-mac/>
@@ -12,23 +12,24 @@
 import Cocoa
 import ZipZap
 
-class ContainerViewController: NSViewController {
+class ContainerViewController: NSViewController, NSWindowDelegate {
 
     var defaultSession: URLSession!
-    var mainViewFrame: NSRect!
-    var mainViewFrameOrigin = NSPoint.zero
+    var mainFrame: NSRect!
+//    var mainViewFrameOrigin = NSPoint.zero
+    var mainContent: NSRect!
     var sharedDocumentController: NSDocumentController!
 
     var imageBitmaps = [NSImageRep]()
     var imageFiles: [ImageFile]? = nil
     var imageFileIndex: Int = -1
+    var inFullScreen = false
     var pageIndex: Int = 0
-    var viewFrameOrigin = NSPoint.zero
-    var viewFrameSize = NSSize.zero
+    var viewFrame = NSRect.zero
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+        // do view setup here
         self.view.wantsLayer = true
         // to use recent documents
         sharedDocumentController = NSDocumentController.shared()
@@ -39,30 +40,26 @@ class ContainerViewController: NSViewController {
         let mainStoryboard: NSStoryboard = NSStoryboard(name: "Main", bundle: nil)
         let sourceViewController = mainStoryboard.instantiateController(withIdentifier: "sourceViewController") as! SourceViewController
         self.insertChildViewController(sourceViewController, at: 0)
-        // get dimensions for view frame
-        guard let mainViewFrame = NSScreen.main()?.visibleFrame
-            else { return }
-        self.mainViewFrame = mainViewFrame
-        self.mainViewFrameOrigin = mainViewFrame.origin
-        self.mainViewFrame.origin = NSPoint.zero
-//        mainViewFrame.size.width *= 0.6
         let presentationOptions: NSApplicationPresentationOptions = [.hideDock, .autoHideMenuBar]
         NSApp.presentationOptions = presentationOptions
-        self.view.addSubview(sourceViewController.view)
+        // get dimensions for view frame
+        guard let visibleFrame = NSScreen.main()?.visibleFrame
+            else { return }
+        self.mainFrame = visibleFrame
+        
     }
 
     override func viewDidAppear() {
         super.viewDidAppear()
         // now window exists
         let sourceViewController = self.childViewControllers[0]
-        sourceViewController.view.animator().frame = mainViewFrame
         let containerWindow = self.view.window!
-        var contentRect = NSRect.zero
-        contentRect.origin = mainViewFrameOrigin
-        contentRect.size = mainViewFrame.size
+        containerWindow.delegate = self
+        mainContent = containerWindow.contentRect(forFrameRect: mainFrame)
+        self.view.addSubview(sourceViewController.view)
+        sourceViewController.view.animator().frame = mainContent
         // set frame for container view window
-        let frameRect = containerWindow.frameRect(forContentRect: contentRect)
-        containerWindow.setFrame(frameRect, display: true, animate: true)
+        containerWindow.setFrame(mainFrame, display: true, animate: true)
     }
 
     func imageViewfromImageIndex(_ imageIndex: Int) {
@@ -193,39 +190,39 @@ class ContainerViewController: NSViewController {
             frameOrigin.y = (frameSize.height - innerHeight) / 2.0
             frameSize.height = innerHeight
         }
-        viewFrameOrigin = frameOrigin
-        viewFrameSize = frameSize
-        viewFrameSize.height += 40
-        return NSRect(x: 0.0, y: 0.0, width: frameSize.width, height: frameSize.height)
+        return NSRect(x: frameOrigin.x, y: frameOrigin.y, width: frameSize.width, height: frameSize.height)
     }
 
     func imageViewWithBitmap() {
-        let imageViewController = self.childViewControllers[0]
-        let imageSubview = imageViewController.view.subviews[1] as! NSImageView
+        let destinationController = self.childViewControllers[0]
+        let imageSubview = destinationController.view.subviews[1] as! NSImageView
         let imageFile = imageFiles?[imageFileIndex]
         if (imageBitmaps.count > 0) {
             let imageBitmap = imageBitmaps[pageIndex]
             // get the real imagesize in pixels
             // look at <http://briksoftware.com/blog/?p=72>
             let imageSize = NSSize(width: imageBitmap.pixelsWide, height: imageBitmap.pixelsHigh)
-            var imageRect = fitImageIntoFrameRespectingAspectRatio(imageSize, into: mainViewFrame)
+            var contentRect = mainContent!
+            contentRect.size.height -= 40
+            var imageRect = fitImageIntoFrameRespectingAspectRatio(imageSize, into: contentRect)
+            // calculate view frame for image view and button
+            viewFrame = imageRect
+            // add place for button
+            viewFrame.size.height += 40
+            if !inFullScreen {
+                imageRect.origin = NSPoint.zero
+            }
             imageSubview.frame = imageRect
             let image = NSImage()
             image.addRepresentations([imageBitmap])
             imageSubview.image = image
-            // shift image view by 40 to leave place for button
-            imageRect.size.height += 40
             let containerWindow = self.view.window!
             containerWindow.setTitleWithRepresentedFilename((imageFile?.fileName)!)
             //resize view controller
-            imageViewController.view.animator().frame = imageRect
-//            imageViewController.view.frame = imageRect
-//            self.view.frame = imageRect
-            var contentRect = NSRect.zero
-            contentRect.origin = viewFrameOrigin
-            contentRect.size = viewFrameSize
+            contentRect.size = viewFrame.size
+            destinationController.view.frame = contentRect
             // set frame for container view window
-            let frameRect = containerWindow.frameRect(forContentRect: contentRect)
+            let frameRect = containerWindow.frameRect(forContentRect: viewFrame)
             containerWindow.setFrame(frameRect, display: true, animate: true)
         }
     }
@@ -273,4 +270,55 @@ class ContainerViewController: NSViewController {
             }
         }
     }
+
+// MARK: - Methods for window delegate
+    func windowWillEnterFullScreen(_ notification: Notification) {
+        inFullScreen = true
+        let controller = self.childViewControllers[0]
+        if controller is SourceViewController {
+            let sourceController = controller as! SourceViewController
+            sourceController.collectionView.removeFromSuperviewWithoutNeedingDisplay()
+            // set new frame
+            sourceController.view.frame = mainFrame
+            sourceController.scrollView.documentView = sourceController.collectionView
+        }
+        else {
+            self.view.frame = mainFrame
+        }
+    }
+
+    func windowDidEnterFullScreen(_ notification: Notification) {
+        // window did exit full screen mode
+    }
+
+    func windowWillExitFullScreen(_ notification: Notification) {
+        // window will exit full screen mode
+        inFullScreen = false
+        let controller = self.childViewControllers[0]
+//        let containerWindow = self.view.window!
+        if controller is SourceViewController {
+            let sourceController = controller as! SourceViewController
+            sourceController.collectionView.removeFromSuperviewWithoutNeedingDisplay()
+            sourceController.view.frame = mainContent
+            sourceController.scrollView.documentView = sourceController.collectionView
+        }
+        else {
+            self.view.frame = controller.view.frame
+        }
+    }
+
+    func windowDidExitFullScreen(_ notification: Notification) {
+        // window did exit full screen mode
+        let containerWindow = self.view.window!
+        let controller = self.childViewControllers[0]
+        if controller is SourceViewController {
+            containerWindow.setFrame(mainFrame, display: true, animate: true)
+        }
+        else {
+            // set frame for container view window
+            let frameRect = containerWindow.frameRect(forContentRect: viewFrame)
+            containerWindow.setFrame(frameRect, display: true, animate: true)            
+        }
+    }
+
 }

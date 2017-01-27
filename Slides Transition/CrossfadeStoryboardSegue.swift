@@ -53,7 +53,7 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         // perform transition animating with NSViewControllerTransitionOptions
         let containerWindow = containerViewController.view.window!
         var contentRect = NSRect.zero
-        var targetRect = containerViewController.mainViewFrame!
+        var targetRect = containerViewController.mainContent!
         if let sourceController = self.sourceController as? SourceViewController {
             // show single image
             containerViewController.transition(from: sourceViewController, to: destinationViewController, options: [NSViewControllerTransitionOptions.crossfade], completionHandler: nil)
@@ -74,7 +74,7 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
             //resize and shift window
             let currentFrame = containerWindow.frame
             let currentRect = NSRectToCGRect(currentFrame)
-            targetRect.origin = containerViewController.mainViewFrameOrigin
+//            targetRect.origin = containerViewController.mainViewFrameOrigin
             // shift parameters, calculate frame rect of container view
             let horizontalChange = (targetRect.size.width - currentRect.size.width)/2
             let verticalChange = (targetRect.size.height - currentRect.size.height)
