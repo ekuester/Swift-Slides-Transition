@@ -27,6 +27,8 @@ The image files can be of different kind, including besides the normal types als
 
 The sequence of the shown images is controlled by the cursor keys ( look into the menu "View", too ):
 
+- back space : return to collection view
+
 - left : previous image
 
 - right : next image
@@ -48,5 +50,6 @@ The program was inspired by an excellent article written by John Marstall
 
 - see <http://theiconmaster.com/2015/03/transitioning-between-view-controllers-in-the-same-window-with-swift-mac/>
 
+My thanks go to the Stack Overflow sites. Without the folks there and whose answers this program would not exist.
 
 Disclaimer: Use the program for what purpose you like, but hold in mind, that I will not be responsible for any harm it will cause to your hard- or software. It was your decision to use this piece of software.
