@@ -31,29 +31,30 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         // prepare for animation
         sourceViewController.view.wantsLayer = true
         destinationViewController.view.wantsLayer = true
-
         // prepare additional items for menu view
-        let upArrowKey = unichar(NSUpArrowFunctionKey)
-        let upArrow = String(utf16CodeUnits: [upArrowKey], count: 1)
-        let sheetUpItem = NSMenuItem(title: "Page Up", action: #selector(containerViewController.sheetUp(_:)), keyEquivalent: upArrow)
-        sheetUpItem.keyEquivalentModifierMask = []
-        let downArrowKey = unichar(NSDownArrowFunctionKey)
-        let downArrow = String(utf16CodeUnits: [downArrowKey], count: 1)
-        let sheetDownItem = NSMenuItem(title: "Page Down", action: #selector(containerViewController.sheetDown(_:)), keyEquivalent: downArrow)
-        sheetDownItem.keyEquivalentModifierMask = []
-        let rightArrowKey = unichar(NSRightArrowFunctionKey)
-        let rightArrow = String(utf16CodeUnits: [rightArrowKey], count: 1)
-        let nextImageItem = NSMenuItem(title: "Next Image", action: #selector(containerViewController.nextImage(_:)), keyEquivalent: rightArrow)
-        nextImageItem.keyEquivalentModifierMask = []
-        let leftArrowKey = unichar(NSLeftArrowFunctionKey)
-        let leftArrow = String(utf16CodeUnits: [leftArrowKey], count: 1)
-        let previousImageItem = NSMenuItem(title: "Previous Image", action: #selector(containerViewController.previousImage(_:)), keyEquivalent: leftArrow)
-        previousImageItem.keyEquivalentModifierMask = []
+        let titles = ["Back", "Page Up", "Page Down", "Next Image", "Previous Image"]
+        let selectors = [
+            NSSelectorFromString("backToCollection:"),
+            NSSelectorFromString("sheetUp:"),
+            NSSelectorFromString("sheetDown:"),
+            NSSelectorFromString("nextImage:"),
+            NSSelectorFromString("previousImage:")
+        ]
+        let keys = [NSBackspaceCharacter, NSUpArrowFunctionKey, NSDownArrowFunctionKey, NSRightArrowFunctionKey, NSLeftArrowFunctionKey]
 
+        var menuItems = [NSMenuItem]()
+        for (i, selector) in zip(0...4, selectors) {
+            let keyChar = UniChar(keys[i])
+            let keyEquivalent = String(utf16CodeUnits: [keyChar], count: 1)
+            let selector = selectors[i]
+            let menuItem = NSMenuItem(title: titles[i], action: selector, keyEquivalent: keyEquivalent)
+            menuItem.keyEquivalentModifierMask = []
+            menuItems.append(menuItem)
+        }
         // perform transition animating with NSViewControllerTransitionOptions
         let containerWindow = containerViewController.view.window!
         var contentRect = NSRect.zero
-        var targetRect = containerViewController.mainContent!
+        let targetRect = containerViewController.mainContent!
         if let sourceController = self.sourceController as? SourceViewController {
             // show single image
             containerViewController.transition(from: sourceViewController, to: destinationViewController, options: [NSViewControllerTransitionOptions.crossfade], completionHandler: nil)
@@ -70,11 +71,9 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
             containerWindow.setTitleWithRepresentedFilename("Show Collection View")
             //resize view controller
             sourceViewController.view.animator().frame = targetRect
-            
             //resize and shift window
             let currentFrame = containerWindow.frame
             let currentRect = NSRectToCGRect(currentFrame)
-//            targetRect.origin = containerViewController.mainViewFrameOrigin
             // shift parameters, calculate frame rect of container view
             let horizontalChange = (targetRect.size.width - currentRect.size.width)/2
             let verticalChange = (targetRect.size.height - currentRect.size.height)
@@ -90,17 +89,16 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         let viewMenu = NSApp.mainMenu!.item(withTitle: "View")
         if destinationViewController is SourceViewController {
             // remove items from submenu "View"
-            for index in (3...6).reversed() {
+            for index in (2...7).reversed() {
                 viewMenu?.submenu?.removeItem(at: index)
             }
         }
         else {
             // add items to submenu "View"
-            viewMenu?.submenu?.insertItem(sheetUpItem, at: 3)
-            viewMenu?.submenu?.insertItem(sheetDownItem, at: 4)
-            viewMenu?.submenu?.insertItem(nextImageItem, at: 5)
-            viewMenu?.submenu?.insertItem(previousImageItem, at: 6)
+            viewMenu?.submenu?.insertItem(NSMenuItem.separator(), at: 2)
+            for (menuEntry, index) in zip(menuItems, 3...7) {
+                viewMenu?.submenu?.insertItem(menuEntry, at: index)
+            }
         }
     }
-
 }

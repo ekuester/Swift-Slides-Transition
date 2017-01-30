@@ -14,11 +14,11 @@ import ZipZap
 
 class ContainerViewController: NSViewController, NSWindowDelegate {
 
+    @IBOutlet weak var colorBox: NSBox!
+
     var defaultSession: URLSession!
     var mainFrame: NSRect!
-//    var mainViewFrameOrigin = NSPoint.zero
     var mainContent: NSRect!
-    var sharedDocumentController: NSDocumentController!
 
     var imageBitmaps = [NSImageRep]()
     var imageFiles: [ImageFile]? = nil
@@ -30,9 +30,7 @@ class ContainerViewController: NSViewController, NSWindowDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // do view setup here
-        self.view.wantsLayer = true
-        // to use recent documents
-        sharedDocumentController = NSDocumentController.shared()
+//        self.view.wantsLayer = true
         // to use url request
         let config = URLSessionConfiguration.default
         self.defaultSession = URLSession(configuration: config)
@@ -195,20 +193,19 @@ class ContainerViewController: NSViewController, NSWindowDelegate {
 
     func imageViewWithBitmap() {
         let destinationController = self.childViewControllers[0]
-        let imageSubview = destinationController.view.subviews[1] as! NSImageView
+        let imageSubview = destinationController.view.subviews[0] as! NSImageView
         let imageFile = imageFiles?[imageFileIndex]
         if (imageBitmaps.count > 0) {
             let imageBitmap = imageBitmaps[pageIndex]
             // get the real imagesize in pixels
-            // look at <http://briksoftware.com/blog/?p=72>
             let imageSize = NSSize(width: imageBitmap.pixelsWide, height: imageBitmap.pixelsHigh)
             var contentRect = mainContent!
-            contentRect.size.height -= 40
+//            contentRect.size.height -= 40
             var imageRect = fitImageIntoFrameRespectingAspectRatio(imageSize, into: contentRect)
             // calculate view frame for image view and button
             viewFrame = imageRect
             // add place for button
-            viewFrame.size.height += 40
+//            viewFrame.size.height += 40
             if !inFullScreen {
                 imageRect.origin = NSPoint.zero
             }
@@ -227,6 +224,7 @@ class ContainerViewController: NSViewController, NSWindowDelegate {
         }
     }
 
+// MARK: - Menu entries for cursor keys
     func sheetUp(_ sender: NSMenuItem) {
         // show page up
         if (!imageBitmaps.isEmpty) {
@@ -237,7 +235,7 @@ class ContainerViewController: NSViewController, NSWindowDelegate {
             }
         }
     }
-    
+
     func sheetDown(_ sender: NSMenuItem) {
         // show page down
         if (imageBitmaps.count > 1) {
@@ -271,7 +269,12 @@ class ContainerViewController: NSViewController, NSWindowDelegate {
         }
     }
 
-// MARK: - Methods for window delegate
+    func backToCollection(_ sender: Any) {
+        let controller = self.childViewControllers[0]
+        controller.performSegue(withIdentifier: "CollectionViewSegue", sender: controller)
+    }
+
+    // MARK: - Methods for window delegate
     func windowWillEnterFullScreen(_ notification: Notification) {
         inFullScreen = true
         let controller = self.childViewControllers[0]
@@ -295,15 +298,15 @@ class ContainerViewController: NSViewController, NSWindowDelegate {
         // window will exit full screen mode
         inFullScreen = false
         let controller = self.childViewControllers[0]
-//        let containerWindow = self.view.window!
         if controller is SourceViewController {
             let sourceController = controller as! SourceViewController
             sourceController.collectionView.removeFromSuperviewWithoutNeedingDisplay()
+            // restore frame
             sourceController.view.frame = mainContent
             sourceController.scrollView.documentView = sourceController.collectionView
         }
         else {
-            self.view.frame = controller.view.frame
+            self.view.frame = viewFrame
         }
     }
 
@@ -317,7 +320,7 @@ class ContainerViewController: NSViewController, NSWindowDelegate {
         else {
             // set frame for container view window
             let frameRect = containerWindow.frameRect(forContentRect: viewFrame)
-            containerWindow.setFrame(frameRect, display: true, animate: true)            
+            containerWindow.setFrame(frameRect, display: true, animate: true)
         }
     }
 

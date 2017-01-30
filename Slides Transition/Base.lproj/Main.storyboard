@@ -698,7 +698,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
-                                <color key="fillColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" white="0.0" alpha="0.90006956335616439" colorSpace="deviceWhite"/>
                             </box>
                         </subviews>
                         <constraints>
@@ -708,6 +708,9 @@
                             <constraint firstItem="BeT-0L-QVQ" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="wmw-hq-8Up"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="colorBox" destination="BeT-0L-QVQ" id="Hit-il-ZqY"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -772,6 +775,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="360" height="480"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wr5-iE-ih1">
+                                <rect key="frame" x="0.0" y="0.0" width="360" height="480"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" id="D8v-ym-HMI"/>
+                            </imageView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Sf0-T2-peq">
                                 <rect key="frame" x="276" y="3" width="70" height="32"/>
                                 <buttonCell key="cell" type="push" title="Back" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PP1-nT-xqZ">
@@ -779,17 +786,13 @@
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <segue destination="WYZ-BH-cww" kind="custom" customClass="CrossfadeStoryboardSegue" customModule="Slides_Transition" customModuleProvider="target" id="83D-5G-yyW"/>
+                                    <segue destination="WYZ-BH-cww" kind="custom" identifier="CollectionViewSegue" customClass="CrossfadeStoryboardSegue" customModule="Slides_Transition" customModuleProvider="target" id="0ld-dU-Q7c"/>
                                 </connections>
                             </button>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wr5-iE-ih1">
-                                <rect key="frame" x="0.0" y="40" width="360" height="440"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" id="D8v-ym-HMI"/>
-                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="wr5-iE-ih1" firstAttribute="top" secondItem="gzy-V5-zdD" secondAttribute="top" id="D9d-CK-7Dt"/>
-                            <constraint firstAttribute="bottom" secondItem="wr5-iE-ih1" secondAttribute="bottom" constant="40" id="K4L-s9-iRa"/>
+                            <constraint firstAttribute="bottom" secondItem="wr5-iE-ih1" secondAttribute="bottom" id="K4L-s9-iRa"/>
                             <constraint firstAttribute="trailing" secondItem="wr5-iE-ih1" secondAttribute="trailing" id="TG8-zP-g8r"/>
                             <constraint firstAttribute="trailing" secondItem="Sf0-T2-peq" secondAttribute="trailing" constant="20" symbolic="YES" id="f4Z-1A-wNc"/>
                             <constraint firstItem="wr5-iE-ih1" firstAttribute="leading" secondItem="gzy-V5-zdD" secondAttribute="leading" id="fMc-iP-wby"/>

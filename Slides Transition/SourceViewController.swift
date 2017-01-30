@@ -39,17 +39,23 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
     var imageDoubleClickedObserver: NSObjectProtocol!
     var imageFolderURL: URL!
     var imageFiles: [ImageFile] = []
+    var recentItemsObserver: NSObjectProtocol!
+    var sharedDocumentController: NSDocumentController!
 
 // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // to use recent documents
+        sharedDocumentController = NSDocumentController.shared()
         view.wantsLayer = true
         collectionView = scrollView.documentView as! NSCollectionView
         let config = URLSessionConfiguration.default
         self.defaultSession = URLSession(configuration: config)
         containerViewController = self.parent as! ContainerViewController!
         imageDoubleClickedObserver = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: "com.image.doubleClicked"), object: nil, queue: nil, using: openImage)
+        // notification if file from recent documents should be opened
+        recentItemsObserver = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: "com.image.openview"), object: nil, queue: nil, using: openView)
     }
 
     override func viewDidAppear() {
@@ -59,12 +65,14 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
         if let imageFiles = containerViewController.imageFiles {
             fileIndex = 0
             self.imageFiles = imageFiles
+            containerViewController.imageFiles?.removeAll()
         }
         processCollectionView()
     }
 
     override func viewWillDisappear() {
-         NotificationCenter.default.removeObserver(imageDoubleClickedObserver)
+        NotificationCenter.default.removeObserver(imageDoubleClickedObserver)
+        NotificationCenter.default.removeObserver(recentItemsObserver)
     }
 
 // MARK: - functions
@@ -102,6 +110,9 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
             DispatchQueue.main.async {
                 self.fileIndex = 0
                     if let url = imageDialog.url {
+                        // note url in recent documents
+                        self.sharedDocumentController.noteNewRecentDocumentURL(url)
+                        // process folder or zip archive from existing URL(s)
                         if zipAllowed {
                             let files = self.imageFilesFromZIP(at: url)
                             if files.isEmpty { return }
@@ -331,7 +342,7 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
             collectionItem.setHighlight(true)
         }
     }
-// 2
+    // 2
     func collectionView(_ collectionView: NSCollectionView, didDeselectItemsAt indexPaths: Set<IndexPath>) {
         for indexPath in indexPaths {
             guard let item = collectionView.item(at: indexPath)
@@ -386,18 +397,42 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
             // assume drop source is from finder and may be more than one file
             var files = [ImageFile]()
             draggingInfo.enumerateDraggingItems(options: .concurrent, for: collectionView, classes: [NSURL.self], searchOptions: [NSPasteboardURLReadingFileURLsOnlyKey: true], using: {(draggingItem, idx, stop) in
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ONLY IMAGE FILE URLs ARE ALLOWED >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                // only regular file urls are accepted
+                let resourceValueKeys: Set<URLResourceKey> = [.typeIdentifierKey]
                 if let url = draggingItem.item as? URL {
-                    let file = ImageFile(with: url, and: "")
-                    files.append(file)
+                    // check file type
+                    do {
+                        // to use the simplified access to resource values you must define
+                        let resourceValues = try url.resourceValues(forKeys: resourceValueKeys)
+                        if let fileType = resourceValues.typeIdentifier {
+                            // filter out pdf or eps document
+                            if ((fileType == "com.adobe.pdf") || (fileType == "com.adobe.encapsulated-postscript")) {
+                                let file = ImageFile(with: url, and: fileType)
+                                files.append(file)
+                            }
+                            else {
+                                // look if public image uti
+                                if UTTypeConformsTo(fileType as CFString, kUTTypeImage) {
+                                    let file = ImageFile(with: url, and: "public.image")
+                                    files.append(file)
+                                }
+                            }
+                        }
+                    }
+                    catch {
+                        print("Unexpected error occured: \(error).")
+                    }
                 }
             })
-            insertFilesAtIndexPathFrom(files, atIndexPath: indexPath)
+            if !files.isEmpty {
+                // files will only be shown, not copied really
+                insertFilesAtIndexPathFrom(files, atIndexPath: indexPath)
+            }
         }
         return true
     }
 
-    // notification from collectionviewitem
+// MARK: - notification from collectionviewitem
     func openImage(_ notification: Notification) {
         // invoked when an item of the collectionview is double clicked
         if let imageFile = notification.object as? ImageFile {
@@ -408,6 +443,39 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
             containerViewController.imageFileIndex = imageIndex
             self.imageFiles.removeAll()
             self.performSegue(withIdentifier: "ShowImageSegue", sender: self)
+        }
+    }
+
+// MARK: - notification from AppDelegate
+    // analogous to <https://www.brandpending.com/2016/02/21/opening-and-saving-custom-document-types-from-a-swift-cocoa-application/>
+    func openView(_ notification: Notification) {
+        // invoked when an item of recent documents is clicked
+        let resourceValueKeys: Set<URLResourceKey> = [.typeIdentifierKey]
+        if let url = notification.object as? URL {
+            // process folder or zip archive from existing URL(s)
+            do {
+                // to use the simplified access to resource values you must define
+                let resourceValues = try url.resourceValues(forKeys: resourceValueKeys)
+                guard let fileType = resourceValues.typeIdentifier
+                    else { return }
+                // filter out zip archive
+                if fileType == "public.zip-archive" {
+                    let files = self.imageFilesFromZIP(at: url)
+                    if files.isEmpty { return }
+                    self.imageFiles = files
+                }
+                else {
+                    self.imageFolderURL = url
+                    let files = self.imageFilesFromFolder(at: url)
+                    if files.isEmpty { return }
+                    self.imageFiles = files
+                }
+                self.processCollectionView()
+            }
+            catch {
+                print("Unexpected error occured: \(error).")
+                
+            }
         }
     }
 }
