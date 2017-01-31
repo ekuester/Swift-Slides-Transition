@@ -108,22 +108,26 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
                     return
             }
             DispatchQueue.main.async {
-                self.fileIndex = 0
-                    if let url = imageDialog.url {
-                        // note url in recent documents
-                        self.sharedDocumentController.noteNewRecentDocumentURL(url)
-                        // process folder or zip archive from existing URL(s)
-                        if zipAllowed {
-                            let files = self.imageFilesFromZIP(at: url)
-                            if files.isEmpty { return }
-                            self.imageFiles = files
-                        }
-                        else {
-                            self.imageFolderURL = url
-                            let files = self.imageFilesFromFolder(at: url)
-                            if files.isEmpty { return }
-                            self.imageFiles = files
-                        }
+                if let url = imageDialog.url {
+                    // note url in recent documents
+                    self.sharedDocumentController.noteNewRecentDocumentURL(url)
+                    // process folder or zip archive from existing URL(s)
+                    var files: [ImageFile]
+                    if zipAllowed {
+                        files = self.imageFilesFromZIP(at: url)
+                    }
+                    else {
+                        self.imageFolderURL = url
+                        files = self.imageFilesFromFolder(at: url)
+                    }
+                    // are there images to show
+                    guard !files.isEmpty
+                        else { return }
+                    if !self.imageFiles.isEmpty {
+                        self.imageFiles.removeAll()
+                    }
+                    self.fileIndex = 0
+                    self.imageFiles = files
                     self.processCollectionView()
                 }
             }
@@ -167,7 +171,7 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
                     temporaryFiles.append(file)
                     entryIndex += 1
                 }
-                guard UTTypeConformsTo((unmanagedFileUTI?.takeRetainedValue())!, kUTTypeImage)
+                guard UTTypeConformsTo(fileType as CFString, kUTTypeImage)
                     else { continue }
                 let file = ImageFile(with: temporaryFileURL, and: "public.image")
                 temporaryFiles.append(file)
@@ -411,7 +415,7 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
                                 files.append(file)
                             }
                             else {
-                                // look if public image uti
+                                // look if uti is for public image uti
                                 if UTTypeConformsTo(fileType as CFString, kUTTypeImage) {
                                     let file = ImageFile(with: url, and: "public.image")
                                     files.append(file)
@@ -458,23 +462,27 @@ class SourceViewController: NSViewController, NSCollectionViewDataSource, NSColl
                 let resourceValues = try url.resourceValues(forKeys: resourceValueKeys)
                 guard let fileType = resourceValues.typeIdentifier
                     else { return }
+                var files: [ImageFile]
                 // filter out zip archive
                 if fileType == "public.zip-archive" {
-                    let files = self.imageFilesFromZIP(at: url)
-                    if files.isEmpty { return }
-                    self.imageFiles = files
+                    files = self.imageFilesFromZIP(at: url)
                 }
                 else {
                     self.imageFolderURL = url
-                    let files = self.imageFilesFromFolder(at: url)
-                    if files.isEmpty { return }
-                    self.imageFiles = files
+                    files = self.imageFilesFromFolder(at: url)
                 }
+                // are there images to show
+                guard !files.isEmpty
+                    else { return }
+                if !self.imageFiles.isEmpty {
+                    self.imageFiles.removeAll()
+                }
+                self.fileIndex = 0
+                self.imageFiles = files
                 self.processCollectionView()
             }
             catch {
                 print("Unexpected error occured: \(error).")
-                
             }
         }
     }

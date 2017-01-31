@@ -33,6 +33,7 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         destinationViewController.view.wantsLayer = true
         // prepare additional items for menu view
         let titles = ["Back", "Page Up", "Page Down", "Next Image", "Previous Image"]
+        // strange enough, you do not need the class prefix containerViewController
         let selectors = [
             NSSelectorFromString("backToCollection:"),
             NSSelectorFromString("sheetUp:"),
@@ -42,11 +43,10 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         ]
         let keys = [NSBackspaceCharacter, NSUpArrowFunctionKey, NSDownArrowFunctionKey, NSRightArrowFunctionKey, NSLeftArrowFunctionKey]
 
-        var menuItems = [NSMenuItem]()
+        var menuItems: [NSMenuItem] = [NSMenuItem.separator()]
         for (i, selector) in zip(0...4, selectors) {
             let keyChar = UniChar(keys[i])
             let keyEquivalent = String(utf16CodeUnits: [keyChar], count: 1)
-            let selector = selectors[i]
             let menuItem = NSMenuItem(title: titles[i], action: selector, keyEquivalent: keyEquivalent)
             menuItem.keyEquivalentModifierMask = []
             menuItems.append(menuItem)
@@ -95,8 +95,7 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         }
         else {
             // add items to submenu "View"
-            viewMenu?.submenu?.insertItem(NSMenuItem.separator(), at: 2)
-            for (menuEntry, index) in zip(menuItems, 3...7) {
+            for (menuEntry, index) in zip(menuItems, 2...7) {
                 viewMenu?.submenu?.insertItem(menuEntry, at: index)
             }
         }
