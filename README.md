@@ -39,6 +39,7 @@ in case of multi-page TIFFs or PDFs use
 
 - down : next page of document
 
+The program does fill the recent documents entries under the "File" menu und you can use them in the normal manner.
 
 There is a link in the source code to the ZipZap framework
 
